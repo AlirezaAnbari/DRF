@@ -49,7 +49,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     # is_verified = models.BooleanField(default=False)
-    firsr_name = models.CharField(max_length=20)
+    first_name = models.CharField(max_length=20)
     
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
@@ -66,7 +66,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 class Profile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=250)
-    first_name = models.CharField(max_length=250)
+    last_name = models.CharField(max_length=250)
     image = models.ImageField(blank=True, null=True)
     description = models.TextField()
     
