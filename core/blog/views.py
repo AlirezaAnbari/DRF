@@ -4,6 +4,7 @@ from django.views.generic import ListView, DetailView, FormView, CreateView, Upd
 from .models import Post
 from .forms import PostForm
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.http import HttpResponse
 
 # Create your views here.
 def indexView(request):
@@ -70,5 +71,4 @@ class PostEditView(LoginRequiredMixin, UpdateView):
 class PostDeleteView(LoginRequiredMixin, DeleteView):
     model = Post
     success_url = '/blog/post/'
-    
     
