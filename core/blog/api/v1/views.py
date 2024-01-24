@@ -15,14 +15,26 @@ def postList(request):
     
     elif request.method == 'POST':
         serializer = PostSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        else:
-            return Response(serializer.errors)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
 
-@api_view()
+@api_view(['GET', 'PUT', 'DELETE'])
 def postDetail(request, id):
-    post = get_object_or_404(Post, id=id, status=True)
-    serializer = PostSerializer(post)
-    return Response(serializer.data)
+    post = get_object_or_404(Post, pk=id, status=True)
+    
+    if request.method == 'GET':
+        serializer = PostSerializer(post)
+        return Response(serializer.data)
+    
+    elif request.method == 'PUT':
+        serializer = PostSerializer(post, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+    
+    elif request.method == 'DELETE':
+        post.delete()
+        x=[m for m in dir(status) if m.startswith('HTTP')]
+        print(x)
+        return Response({"detail":"Item deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
