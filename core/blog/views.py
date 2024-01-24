@@ -51,16 +51,16 @@ class PostCreateView(FormView):
         return super().form_valid(form)
 '''
 
-class PostCreateView(LoginRequiredMixin, UpdateView):
-    model = Post
-    # fields = ['author','title','content',
-    #           'status','category','published_date']
-    form_class = PostForm
-    success_url = '/blog/post/'
+# class PostCreateView(LoginRequiredMixin, UpdateView):
+#     model = Post
+#     # fields = ['author','title','content',
+#     #           'status','category','published_date']
+#     form_class = PostForm
+#     success_url = '/blog/post/'
     
-    def form_valid(self, form):
-        form.instance.author = self.request.user 
-        return super(PostCreateView, self).form_valid(form)
+#     def form_valid(self, form):
+#         form.instance.author = self.request.user 
+#         return super(PostCreateView, self).form_valid(form)
     
     
 class PostEditView(LoginRequiredMixin, UpdateView):
