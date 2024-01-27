@@ -1,13 +1,14 @@
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.generics import GenericAPIView
+from rest_framework.generics import GenericAPIView, ListAPIView, ListCreateAPIView
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser
+from rest_framework.views import APIView
+from rest_framework import mixins
 from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 from .serializers import PostSerializer
 from ...models import Post
 
-from rest_framework.views import APIView
 
 """
 @api_view(['GET', 'POST'])
@@ -47,24 +48,12 @@ class PostList(APIView):
         return Response(serializer.data)
 """
 
-class PostList(GenericAPIView):
+class PostList(ListCreateAPIView):
     '''getting a list of posts and creating a new posts'''
     permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = PostSerializer
     queryset = Post.objects.filter(status=True)
     
-    def get(self, request):
-        '''retriveing a list of posts'''
-        queryset = self.get_queryset()
-        serializer = self.serializer_class(queryset, many=True)
-        return Response(serializer.data)
-    
-    def post(self, request):
-        '''creating post with provided data'''
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data)
 
 """
 @api_view(['GET', 'PUT', 'DELETE'])
