@@ -1,13 +1,15 @@
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.generics import GenericAPIView, ListAPIView, ListCreateAPIView
+from rest_framework.generics import GenericAPIView, ListAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser
 from rest_framework.views import APIView
 from rest_framework import mixins
+from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
-from .serializers import PostSerializer
-from ...models import Post
+from .serializers import PostSerializer, CategorySerializer
+from ...models import Post, Category
+from rest_framework.decorators import action
 
 
 """
@@ -54,29 +56,8 @@ class PostList(ListCreateAPIView):
     serializer_class = PostSerializer
     queryset = Post.objects.filter(status=True)
     
-
+    
 """
-@api_view(['GET', 'PUT', 'DELETE'])
-@permission_classes([IsAuthenticatedOrReadOnly])
-def postDetail(request, id):
-    post = get_object_or_404(Post, pk=id, status=True)
-    
-    if request.method == 'GET':
-        serializer = PostSerializer(post)
-        return Response(serializer.data)
-    
-    elif request.method == 'PUT':
-        serializer = PostSerializer(post, data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data)
-    
-    elif request.method == 'DELETE':
-        post.delete()
-        return Response({'detail':'Item deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
-"""
-    
-    
 class PostDetail(APIView):
     '''gettiing detail of the post and edit plus removing it'''
     permission_classes = [IsAuthenticatedOrReadOnly]
@@ -100,4 +81,42 @@ class PostDetail(APIView):
         '''delete the post object'''
         post = get_object_or_404(Post, pk=id, status=True)
         post.delete()
-        return Response({"detail":"Item deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+        return Response({'detail':'Item deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
+"""
+
+"""
+class PostDetail(GenericAPIView, mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin):
+    '''gettiing detail of the post and edit plus removing it'''
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    serializer_class = PostSerializer
+    queryset = Post.objects.filter(status=True)
+    
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
+    
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+    
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
+"""
+
+
+class PostDetail(RetrieveUpdateDestroyAPIView):
+    '''gettiing detail of the post and edit plus removing it'''
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    serializer_class = PostSerializer
+    queryset = Post.objects.filter(status=True)
+    
+    
+class PostModelViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    serializer_class = PostSerializer
+    queryset = Post.objects.filter(status=True)
+    
+
+
+class CategoryModelViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
+    serializer_class = CategorySerializer
+    queryset = Category.objects.all()
