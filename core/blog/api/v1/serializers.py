@@ -29,7 +29,7 @@ class PostSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         return request.build_absolute_uri(obj.pk)
     
-    def to_representation(self, instance):
+    def to_representation(self, instance): 
         request = self.context.get('request')
         rep = super().to_representation(instance) 
         
