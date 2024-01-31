@@ -29,7 +29,7 @@ class Post(models.Model):
         return reverse('blog:api-v1:post-detail', kwargs={'pk': self.pk})
     
 class Category(models.Model):
-    name = models.CharField(max_length=250)
+    name = models.CharField(max_length=255)
     
     def __str__(self):
         return self.name
