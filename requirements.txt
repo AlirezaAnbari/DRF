@@ -9,5 +9,10 @@ coreapi==2.3.3
 markdown       
 django-filter 
 drf-yasg[validation]
+djangorestframework-simplejwt
 
 # Deployment modules
+
+
+# Email third-party modules
+django-mail-templated
