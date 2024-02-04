@@ -10,13 +10,14 @@ class Profile(models.Model):
     last_name = models.CharField(max_length=250)
     image = models.ImageField(blank=True, null=True)
     description = models.TextField()
-    
+
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
-    
+
     def __str__(self):
         return self.user.email
-    
+
+
 @receiver(post_save, sender=User)
 def save_proile(sender, instance, created, **kwargs):
     if created:

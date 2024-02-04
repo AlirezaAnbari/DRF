@@ -1,6 +1,15 @@
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.generics import GenericAPIView, ListAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser
+from rest_framework.generics import (
+    GenericAPIView,
+    ListAPIView,
+    ListCreateAPIView,
+    RetrieveUpdateDestroyAPIView,
+)
+from rest_framework.permissions import (
+    IsAuthenticated,
+    IsAuthenticatedOrReadOnly,
+    IsAdminUser,
+)
 from rest_framework.views import APIView
 from rest_framework import mixins
 from rest_framework import viewsets
@@ -31,8 +40,8 @@ def postList(request):
         serializer.save()
         return Response(serializer.data)
 """
-    
-    
+
+
 """
 class PostList(APIView):
     '''getting a list of posts and creating a new posts'''
@@ -53,13 +62,15 @@ class PostList(APIView):
         return Response(serializer.data)
 """
 
+
 class PostList(ListCreateAPIView):
-    '''getting a list of posts and creating a new posts'''
+    """getting a list of posts and creating a new posts"""
+
     permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = PostSerializer
     queryset = Post.objects.filter(status=True)
-    
-    
+
+
 """
 class PostDetail(APIView):
     '''gettiing detail of the post and edit plus removing it'''
@@ -106,22 +117,26 @@ class PostDetail(GenericAPIView, mixins.RetrieveModelMixin, mixins.UpdateModelMi
 
 
 class PostDetail(RetrieveUpdateDestroyAPIView):
-    '''gettiing detail of the post and edit plus removing it'''
+    """gettiing detail of the post and edit plus removing it"""
+
     permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = PostSerializer
     queryset = Post.objects.filter(status=True)
-    
-    
+
+
 class PostModelViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
     serializer_class = PostSerializer
     queryset = Post.objects.filter(status=True)
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    filterset_fields = {'category':['exact', 'in'], 'author':['exact'], 'status':['exact']}
-    search_fields = ['=title']
-    ordering_fields = ['published_date']
+    filterset_fields = {
+        "category": ["exact", "in"],
+        "author": ["exact"],
+        "status": ["exact"],
+    }
+    search_fields = ["=title"]
+    ordering_fields = ["published_date"]
     pagination_class = DefaultPagination
-    
 
 
 class CategoryModelViewSet(viewsets.ModelViewSet):
