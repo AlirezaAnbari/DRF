@@ -37,7 +37,7 @@ class Command(BaseCommand):
             Category.objects.get_or_create(name=category)
             
         # Create posts
-        for _ in range(10):
+        for _ in range(15):
             Post.objects.create(
                 author = profile,
                 title = self.fake.paragraph(nb_sentences=1),
