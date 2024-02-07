@@ -177,3 +177,6 @@ CORS_ALLOWED_ORIGIN = [
     "http://127.0.0.1:5500",
 
 ]
+
+# celery config
+CELERY_BROKER_URL = 'redis://redis:6379/1'

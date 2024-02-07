@@ -25,3 +25,7 @@ flake8
 pytest==8.0.0
 pytest-django==4.8.0
 Faker
+
+# background process and cache
+celery
+Redis
