@@ -22,11 +22,11 @@ services:
       - DEBUG=True
     depends_on:
       - redis
-  
+   
   worker:
     build: .
     command: celery -A core worker --loglevel=info
-    volumes:
+    volumes: 
       - ./core:/app
     depends_on:
       - redis
