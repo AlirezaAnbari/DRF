@@ -46,5 +46,19 @@ class CustomUserAdmin(UserAdmin):
     )
 
 
-admin.site.register(Profile)
+class ProfileAdmin(admin.ModelAdmin):
+    
+    def user_email(self, obj):
+        """
+        Access to the user's email
+        """
+        return obj.user.email
+    
+    list_display = (
+        'user_email', 'full_name', 'created_date',
+    )
+    
+    
+# admin.site.register(Profile)
+admin.site.register(Profile, ProfileAdmin)
 admin.site.register(User, CustomUserAdmin)
