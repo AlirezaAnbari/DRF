@@ -21,6 +21,8 @@ class UserManager(BaseUserManager):
         if not email:
             raise ValueError(_("The Email must be set"))
         email = self.normalize_email(email)
+        
+        # Create and save the user
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save()
@@ -51,7 +53,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     email = models.EmailField(max_length=255, unique=True)
     is_superuser = models.BooleanField(default=False)
-    is_staff = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False)            # True means access to admin panel.
     is_active = models.BooleanField(default=True)
     is_verified = models.BooleanField(default=False)
     first_name = models.CharField(max_length=255)
