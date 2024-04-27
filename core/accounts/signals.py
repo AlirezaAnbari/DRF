@@ -10,7 +10,7 @@ def save_profile(sender, instance, created, **kwargs):
     """
     Signal for post creating a user which activates when a user being created ONLY
     """
+    if created:                                
         # Use this condition because if you don't use that,
-        # when you change some information it create another profile for you.
-    if created:                                  
+        # when you change some information it create another profile for you.  
         Profile.objects.create(user=instance)

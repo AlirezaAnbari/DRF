@@ -1,3 +1,5 @@
+from typing import Any
+from django.db.models.query import QuerySet
 from django.shortcuts import render
 from django.views.generic.base import TemplateView, RedirectView
 from django.views.generic import (
@@ -18,11 +20,11 @@ from django.http import HttpResponse
 
 
 # Create your views here.
-def indexView(request):
-    """
-    a function based view to show index page
-    """
-    return render(request, "index.html")
+# def indexView(request):
+#     """
+#     a function based view to show index page
+#     """
+#     return render(request, "index.html")
 
 
 class IndexView(TemplateView):
@@ -30,7 +32,7 @@ class IndexView(TemplateView):
     a class based view to show index page
     """
 
-    template_name = "index.html"
+    template_name = "blog/post_list.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -42,10 +44,15 @@ class IndexView(TemplateView):
 class PostListView(PermissionRequiredMixin, LoginRequiredMixin, ListView):
     permission_required = "blog.view_post"
     # model = Post
-    queryset = Post.objects.all()
+    # queryset = Post.objects.all()
+    # ordering = "-id"
+    
     # paginate_by = 2
-    context_object_name = "posts"
-    ordering = "-id"
+    context_object_name = "posts" # Use in html page(template tag name)
+    
+    def get_queryset(self):
+        posts = Post.objects.filter(status=True).order_by(self.ordering)
+        return posts
 
 
 class PostDetailView(LoginRequiredMixin, DetailView):

@@ -10,7 +10,6 @@ class Post(models.Model):
     """
     Define posts for blog app
     """
-
     author = models.ForeignKey("accounts.Profile", on_delete=models.CASCADE)
     image = models.ImageField(null=True, blank=True)
     title = models.CharField(max_length=250)

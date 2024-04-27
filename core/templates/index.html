@@ -6,8 +6,14 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>index</h1>
-    <p>{{name}}</p>
-    <p>{{posts}}</p>
+    <h1>Posts List</h1>
+    {% for post in posts %}
+        <div>
+            <h2>
+                <p>{{ forloop.counter }} - {{ post.title }}</p>
+            </h2>
+            <h3>{{ post.published_date | date:'l, F j, Y' }}</h3>
+        </div>
+    {% endfor %}
 </body>
 </html>
