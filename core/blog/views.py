@@ -70,10 +70,7 @@ class PostCreateView(FormView):
         return super().form_valid(form)
 """
 
-class PostListApiView(TemplateView):
-    template_name = "blog/post_list_api.html"
-    
-    
+
 class PostCreateView(LoginRequiredMixin, UpdateView):
     model = Post
     # fields = ['author','title','content',
@@ -95,3 +92,8 @@ class PostEditView(LoginRequiredMixin, UpdateView):
 class PostDeleteView(LoginRequiredMixin, DeleteView):
     model = Post
     success_url = "/blog/post/"
+
+
+# API
+class PostListApiView(TemplateView):
+    template_name = "blog/post_list_api.html"
